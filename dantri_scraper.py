@@ -26,22 +26,22 @@ def setup_driver():
     return driver
 
 def scrape_dantri():
-    """Cào dữ liệu bài viết từ dantri.com.vn."""
-    logger.info("Bắt đầu quá trình cào dữ liệu...")
+    """Vào dữ liệu bài viết từ dantri.com.vn."""
+    logger.info("Bắt đầu quá trình vào dữ liệu...")
     driver = setup_driver()
     data = []
 
     try:
-        # 1. Truy cập trang web
+# 1. Truy cập trang web
         driver.get("https://dantri.com.vn/")
-        time.sleep(3)  # Đợi trang tải
+        time.sleep(3)  
 
-        # 2. Chọn danh mục tin tức (ví dụ: Công nghệ)
+# 2. Chọn danh mục tin tức (ví dụ: Công nghệ)
         category_link = driver.find_element(By.XPATH, "//a[contains(text(), 'Công nghệ')]")
         category_link.click()
         time.sleep(3)
 
-        # 3. Tìm kiếm (nếu có ô tìm kiếm)
+# 3. Tìm kiếm (nếu có ô tìm kiếm)
         try:
             search_box = driver.find_element(By.XPATH, "//input[@placeholder='Tìm kiếm']")
             search_box.send_keys("công nghệ")
@@ -50,13 +50,13 @@ def scrape_dantri():
         except:
             logger.warning("Không tìm thấy ô tìm kiếm, bỏ qua bước tìm kiếm.")
 
-        # 4. Lấy dữ liệu từ tất cả các trang
+# 4. Lấy dữ liệu từ tất cả các trang
         while True:
             # Lấy danh sách bài viết
             articles = driver.find_elements(By.XPATH, "//article[contains(@class, 'article-item')]")
             article_links = [article.find_element(By.TAG_NAME, 'a').get_attribute('href') for article in articles]
 
-            # 5. Cào dữ liệu từ từng bài viết
+# 5. Vào dữ liệu từ từng bài viết
             for link in article_links:
                 try:
                     driver.get(link)
@@ -90,11 +90,11 @@ def scrape_dantri():
                         'Hình ảnh': image,
                         'Nội dung': content,
                         'Link': link,
-                        'Thời gian cào': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                        'Thời gian vào': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                     })
-                    logger.info(f"Đã cào bài viết: {title}")
+                    logger.info(f"Đã vào bài viết: {title}")
                 except Exception as e:
-                    logger.error(f"Lỗi khi cào bài viết {link}: {e}")
+                    logger.error(f"Lỗi khi vào bài viết {link}: {e}")
 
             # Kiểm tra nút "Trang tiếp"
             try:
@@ -102,23 +102,21 @@ def scrape_dantri():
                 next_button.click()
                 time.sleep(3)
             except:
-                logger.info("Không còn trang tiếp theo, kết thúc cào dữ liệu.")
+                logger.info("Không còn trang tiếp theo, kết thúc vào dữ liệu.")
                 break
 
-        # 6. Lưu dữ liệu vào file CSV
+# 6. Lưu dữ liệu vào file CSV
         if data:
-            df = pd.DataFrame(data)
-            output_dir = 'output'
-            os.makedirs(output_dir, exist_ok=True)
-            output_file = os.path.join(output_dir, f'dantri_news_{datetime.now().strftime("%Y%m%d")}.csv')
-            df.to_csv(output_file, index=False, encoding='utf-8-sig')
-            logger.info(f"Dữ liệu đã được lưu vào {output_file}")
+            df = pd.DataFrame(data, columns=["title", "description", "image", "content", "link"])
+            df.to_excel("dantri.xlsx")
+            print(df)
+
 
     except Exception as e:
-        logger.error(f"Lỗi trong quá trình cào dữ liệu: {e}")
+        logger.error(f"Lỗi trong quá trình vào dữ liệu: {e}")
     finally:
         driver.quit()
-
+# 7. Set lịch chạy vào lúc 6h sáng hằng ngày
 def schedule_task():
     """Lập lịch chạy hàng ngày lúc 6 giờ sáng."""
     schedule.every().day.at("06:00").do(scrape_dantri)
@@ -128,7 +126,7 @@ def schedule_task():
         time.sleep(60)
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Cào dữ liệu từ DanTri")
+    parser = argparse.ArgumentParser(description="Vào dữ liệu từ DanTri")
     parser.add_argument('--schedule', action='store_true', help="Chạy theo lịch 6h sáng")
     args = parser.parse_args()
 
