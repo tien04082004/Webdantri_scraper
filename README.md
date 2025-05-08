@@ -1,6 +1,6 @@
-# Dự án Cào Dữ liệu DanTri
+# Dự án Vào Dữ liệu DanTri
 
-Dự án này sử dụng Python và Selenium để cào dữ liệu bài viết từ trang [DanTri](https://dantri.com.vn/), lưu vào file CSV và lập lịch chạy tự động lúc 6 giờ sáng hàng ngày.
+Dự án này sử dụng Python và Selenium để vào dữ liệu bài viết từ trang [DanTri](https://dantri.com.vn/), lưu vào file Excel và lập lịch chạy tự động lúc 6 giờ sáng hàng ngày.
 
 ## Yêu cầu
 - Python 3.8+
@@ -10,5 +10,5 @@ Dự án này sử dụng Python và Selenium để cào dữ liệu bài viết
 ## Cài đặt
 1. **Clone repository**:
    ```bash
-   git clone https://github.com/<tien04082004>/dantri_scraper
-   cd dantri_scraper
+   git clone https://github.com/<tien04082004>/Webdantri_scraper
+   cd Webdantri_scraper
