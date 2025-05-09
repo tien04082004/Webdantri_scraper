@@ -1,4 +1,4 @@
-# Dự án Cào Dữ liệu DanTri
+# Dự án Vào Dữ liệu DanTri
 
 Dự án này sử dụng Python và Selenium để vào dữ liệu bài viết từ trang [DanTri](https://dantri.com.vn/), lưu vào file Excel và lập lịch chạy tự động lúc 6 giờ sáng hàng ngày.
 
